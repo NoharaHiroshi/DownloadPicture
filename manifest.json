@@ -1,0 +1,35 @@
+{
+    "manifest_version": 2,
+    "name": "批量下载图片",
+    "description": "批量下载页面内的图片",
+    "version": "1.0",
+    "browser_action": {
+        "default_icon": "logo.png",
+        "default_popup": "popup.html",
+        "default_title": "(〃'▽'〃)"
+    },
+	"background": {
+      "scripts": ["js/background.js"],
+      "persistent": false
+    },
+    "content_security_policy": "script-src 'self'; object-src 'self'",
+    "permissions": [
+		"activeTab",
+		"tabs",
+		"downloads",
+		"contextMenus",
+        "webRequestBlocking",
+        "storage",
+        "http://*/*",
+        "https://*/*"
+	],
+	"content_scripts": 
+	[
+		{
+			"matches": ["<all_urls>"],
+			"js": ["js/jquery.min.js", "js/content-script.js"],
+			"css": ["css/custom.css"],
+			"run_at": "document_start"
+		}
+	]
+}

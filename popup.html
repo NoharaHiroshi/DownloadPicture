@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            html,body{height: 100%;font-size: 12px;}
+            body{
+              font-family: 'Microsoft Yahei';
+              margin:0;
+              padding:0;
+              text-align: center;
+            }
+            .container {
+              width: 180px;
+              min-height: 50px;
+              padding: 5px;
+            }
+            .button {
+              width: 90%;
+              border-radius: 5px;
+              font-size: 12px;
+              color: #999;
+              letter-spacing: 1.14px;
+              border: 1px solid #eaeaea;
+              height: 30px;
+              line-height: 30px;
+              background: #fff;
+            }
+            .button:hover{
+              background: #f56c6c;
+              border: 1px solid #f56c6c;
+              color: #fff;
+            }
+            .header {
+              width: 90%;
+              margin: 15px auto;
+            }
+            .header h1 {
+              font-size: 14px;
+              color: #888888;
+            }
+            .content {
+              width: 90%;
+              margin: 15px auto;
+            }
+        </style>
+        <title>批量下载图片</title>
+    </head>
+    <body>
+        <div id="info" class="container">
+          <div class="header">
+            <h1>批量下载图片</h1>
+          </div>
+          <div class="content">
+            <button class="button" id="open_background">当前页面图片</button>
+          </div>
+		    </div>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/popup.js"></script>
+    </body>
+</html>
