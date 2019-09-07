@@ -1,6 +1,7 @@
 function load() {
   window.console.info('background.js load！');
   if(window.$){
+    console.log("$.fn.flexImages：", window.$.fn.flexImages);
     init();
   }
 }
@@ -10,8 +11,9 @@ window.onload = load();
 function init() {
   let tab = get("tab");
   let images = get("images");
+  let container = $(".container");
   for(let i=0; i<images.length; i++){
-    $(".container").append("<img alt='" + images[i].fileName + "'src='" + images[i].url + "'>");
+      container.append("<div class='item'><img alt='" + images[i].fileName + "'src='" + images[i].url + "'></div>");
   }
 }
 
