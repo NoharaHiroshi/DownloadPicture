@@ -71,7 +71,7 @@ function unique(arr, type) {
 
 // 向扩展发送信息
 function sendMessage(info) {
-  chrome.runtime.sendMessage(info, function(response) {
+  chrome.runtime.sendMessage(info, function (response) {
     console.log(response);
   });
 }

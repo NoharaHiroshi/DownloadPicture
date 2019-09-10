@@ -16,18 +16,24 @@ function init() {
     grid: true,
     min: 0,
     max: 2000,
-    from: 0,
-    to: 2000,
-    postfix: "px"
+    from: 500,
+    to: 1000,
+    postfix: "px",
+    onChange: function (data) {//数据变化时触发
+      console.log(data);
+    },
   });
   $(".height-range-slider").ionRangeSlider({
     type: "double",
     grid: true,
     min: 0,
     max: 2000,
-    from: 0,
-    to: 2000,
-    postfix: "px"
+    from: 500,
+    to: 1000,
+    postfix: "px",
+    onChange: function (data) {//数据变化时触发
+      console.log(data);
+    },
   });
   for(let i=0; i<images.length; i++){
       getImageSize(images[i].url, (w, h)=>{
