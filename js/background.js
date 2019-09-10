@@ -6,44 +6,79 @@ function load() {
 }
 window.onload = load();
 
+let fromW, toW, fromH, toH;
+
 // 初始化
 function init() {
   let tab = get("tab");
   let images = get("images");
   let container = $(".container");
+  let maxWidth = 0;
+  let maxHeight = 0;
+  for(let i=0; i<images.length; i++){
+      getImageSize(images[i].url, (w, h)=>{
+        if (w > maxWidth) { maxWidth = w; }
+        if (h > maxHeight) { maxHeight = h; }
+        container.append("<div class='item'>" +
+          "<img alt='" + images[i].fileName + "'src='" + images[i].url + "'>" +
+          "<div class='img-size'>" + w + " X " + h +"</div>" +
+          "</div>");
+        if(i === images.length - 1){
+          fromW = 0;
+          fromH = 0;
+          toW = maxWidth;
+          toH = maxWidth;
+          initRangeSelect(maxWidth, maxHeight);
+        }
+      });
+  }
+}
+
+function updateImage(fromW, toW, fromH, toH) {
+  let container = $(".container");
+  container.html("");
+  let images = get("images");
+  for(let i=0; i<images.length; i++){
+    getImageSize(images[i].url, (w, h)=>{
+      if((fromW <= w && w <= toW) && (fromH <= h && h <= toH)){
+        container.append("<div class='item'>" +
+          "<img alt='" + images[i].fileName + "'src='" + images[i].url + "'>" +
+          "<div class='img-size'>" + w + " X " + h +"</div>" +
+          "</div>");
+      }
+    });
+  }
+}
+
+function initRangeSelect(maxWidth, maxHeight) {
   $(".width-range-slider").ionRangeSlider({
     type: "double",
     grid: true,
     min: 0,
-    max: 2000,
-    from: 500,
-    to: 1000,
+    max: maxWidth,
+    from: 0,
+    to: maxWidth,
     postfix: "px",
-    onChange: function (data) {//数据变化时触发
-      console.log(data);
+    onChange: function (data) { //数据变化时触发
+      fromW = data.fromNumber;
+      toW = data.toNumber;
+      updateImage(fromW, toW, fromH, toH);
     },
   });
   $(".height-range-slider").ionRangeSlider({
     type: "double",
     grid: true,
     min: 0,
-    max: 2000,
+    max: maxHeight,
     from: 500,
-    to: 1000,
+    to: maxHeight,
     postfix: "px",
     onChange: function (data) {//数据变化时触发
-      console.log(data);
+      fromH = data.fromNumber;
+      toH = data.toNumber;
+      updateImage(fromW, toW, fromH, toH);
     },
   });
-  for(let i=0; i<images.length; i++){
-      getImageSize(images[i].url, (w, h)=>{
-        console.log(w, h);
-        container.append("<div class='item'>" +
-          "<img alt='" + images[i].fileName + "'src='" + images[i].url + "'>" +
-          "<div class='img-size'>" + w + " X " + h +"</div>" +
-          "</div>");
-      });
-  }
 }
 
 // 修改图标信息
