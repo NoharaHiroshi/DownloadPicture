@@ -45,6 +45,7 @@ function init() {
       console.log("initRangeSelect");
       initRangeSelect(maxWidth, maxHeight);
       clearInterval(timer);
+      loading(false);
     }
   }, 1000)
 }
@@ -124,4 +125,10 @@ function getImageSize(url, callback) {
       callback(img.width, img.height);
     }
   }
+}
+
+// 遮罩层
+function loading(bool) {
+  let l = $(".loading");
+  bool? l.css("display", "block"): l.css("display", "none");
 }
