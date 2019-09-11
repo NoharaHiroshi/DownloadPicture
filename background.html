@@ -146,6 +146,15 @@
       box-sizing: border-box;
       overflow: hidden;
     }
+    .header {
+
+    }
+    .header p {
+      font-size: 12px;
+      padding: 0 10px;
+      height: 30px;
+      line-height: 30px;
+    }
 	</style>
 </head>
 <body>
@@ -154,6 +163,11 @@
     <span>Loading</span>
   </div>
   <div class="main">
+    <div class="header">
+      <p>当前页面：<span id="title"></span></p>
+      <p>当前URL：<span id="url"></span></p>
+      <p>图片数量：<span id="imgCount"></span></p>
+    </div>
     <div class="controller">
       <div class="controller-item">
         <div class="range-slider-info">宽：</div>

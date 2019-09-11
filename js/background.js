@@ -23,6 +23,10 @@ window.onload = load();
 function init() {
   let tab = get("tab");
   let images = get("images");
+  console.log(tab);
+  $("#title").text(tab.title);
+  $("#url").text(tab.url);
+  $("#imgCount").text(images.length);
   let container = $(".container");
   let maxWidth = 0;
   let maxHeight = 0;
