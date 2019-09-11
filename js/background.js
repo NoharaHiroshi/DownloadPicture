@@ -2,7 +2,6 @@ let fromW = 0,
   toW = 0,
   fromH = 0,
   toH = 0;
-let selectImages = [];
 let downloadCount = 0;
 let allDownloadCount = 0;
 
@@ -12,7 +11,8 @@ function load() {
     init();
     // 下载所有图片
     $("#downloadAll").click(function (e) {
-      let images = get("images");
+      let images = $(".multi-selected > img");
+      console.log("need download: ", images);
       downloadImages(images);
     });
   }
@@ -153,7 +153,7 @@ function downloadImages(imgObjs) {
   downloadCount = 0;
   for(let i=0; i<imgObjs.length; i++){
     let obj = {
-      "url": imgObjs[i].url
+      "url": imgObjs[i].src
     };
     chrome.downloads.download(obj, (downlaodId) => {
       if(downlaodId){

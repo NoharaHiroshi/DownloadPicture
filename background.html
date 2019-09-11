@@ -15,9 +15,11 @@
       min-width: 320px;
       color: #777;
       background-color: #fafafa;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      user-select: none;
     }
     .main {
-      margin-bottom: 30px;
       padding: 20px 10px;
       background: #fff;
       border: 1px solid #eaeaea;
@@ -134,6 +136,16 @@
       font-size: 12px;
       color: #888888;
     }
+    .multi-selected {
+      border: 1px solid #ff5566;
+    }
+    .content {
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
 	</style>
 </head>
 <body>
@@ -155,7 +167,7 @@
       </div>
       <div class="controller-item">
         <div class="download-info">下载：</div>
-        <button class="button" id="downloadAll">全部下载</button>
+        <button class="button" id="downloadAll">下载</button>
       </div>
       <div class="controller-item">
         <div class="download-info">进度：</div>
@@ -167,11 +179,12 @@
       </div>
     </div>
   </div>
-  <div style="max-width:1200px;margin:auto;padding:0 10px 10px;overflow: hidden;">
+  <div class="content">
     <div class="container"></div>
   </div>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/lib/ion.rangeSlider.js"></script>
+  <script type="text/javascript" src="js/lib/mouseSelect.js"></script>
 	<script type="text/javascript" src="js/background.js"></script>
 </body>
 </html>
