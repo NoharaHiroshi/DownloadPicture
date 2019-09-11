@@ -1,3 +1,8 @@
+let fromW = 0,
+  toW = 0,
+  fromH = 0,
+  toH = 0;
+
 function load() {
   window.console.info('background.js load！');
   if(window.$){
@@ -6,8 +11,6 @@ function load() {
 }
 window.onload = load();
 
-let fromW, toW, fromH, toH;
-
 // 初始化
 function init() {
   let tab = get("tab");
@@ -15,6 +18,7 @@ function init() {
   let container = $(".container");
   let maxWidth = 0;
   let maxHeight = 0;
+  let successCount = 0;
   for(let i=0; i<images.length; i++){
       getImageSize(images[i].url, (w, h)=>{
         if (w > maxWidth) { maxWidth = w; }
@@ -23,15 +27,26 @@ function init() {
           "<img alt='" + images[i].fileName + "'src='" + images[i].url + "'>" +
           "<div class='img-size'>" + w + " X " + h +"</div>" +
           "</div>");
-        if(i === images.length - 1){
-          fromW = 0;
-          fromH = 0;
-          toW = maxWidth;
-          toH = maxWidth;
-          initRangeSelect(maxWidth, maxHeight);
-        }
+        successCount ++;
+        console.log("i: ", i, "successCount: ", successCount, w, h);
+        fromW = 0;
+        fromH = 0;
+        toW = maxWidth;
+        toH = maxHeight;
       });
   }
+  // 循环等待所有图片加载完毕
+  let times = 0;
+  let timer = setInterval(function () {
+    times ++;
+    console.log("wait: ", successCount, "times: ", times);
+    // 部分图片加载失败，不影响整体的渲染
+    if(successCount === images.length || times === 5){
+      console.log("initRangeSelect");
+      initRangeSelect(maxWidth, maxHeight);
+      clearInterval(timer);
+    }
+  }, 1000)
 }
 
 function updateImage(fromW, toW, fromH, toH) {
