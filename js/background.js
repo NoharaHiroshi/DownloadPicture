@@ -2,11 +2,19 @@ let fromW = 0,
   toW = 0,
   fromH = 0,
   toH = 0;
+let selectImages = [];
+let downloadCount = 0;
+let allDownloadCount = 0;
 
 function load() {
   window.console.info('background.js load！');
   if(window.$){
     init();
+    // 下载所有图片
+    $("#downloadAll").click(function (e) {
+      let images = get("images");
+      downloadImages(images);
+    });
   }
 }
 window.onload = load();
@@ -131,4 +139,28 @@ function getImageSize(url, callback) {
 function loading(bool) {
   let l = $(".loading");
   bool? l.css("display", "block"): l.css("display", "none");
+}
+
+// 下载文件状态
+function downloadImagesStatus(allCount, curCount) {
+    $("#allCount").text(allCount);
+    $("#curCount").text(curCount);
+}
+
+// 下载文件
+function downloadImages(imgObjs) {
+  allDownloadCount = imgObjs.length;
+  downloadCount = 0;
+  for(let i=0; i<imgObjs.length; i++){
+    let obj = {
+      "url": imgObjs[i].url
+    };
+    chrome.downloads.download(obj, (downlaodId) => {
+      if(downlaodId){
+        downloadCount++;
+        console.log("allDownloadCount: ", allDownloadCount, "currentDownLoadCount: ", downloadCount);
+        downloadImagesStatus(allDownloadCount, downloadCount);
+      }
+    })
+  }
 }
