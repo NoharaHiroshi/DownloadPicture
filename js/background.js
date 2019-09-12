@@ -10,10 +10,11 @@ function load() {
   if(window.$){
     init();
     // 下载所有图片
+    let tab = get("tab");
     $("#downloadAll").click(function (e) {
       let images = $(".multi-selected > img");
       console.log("need download: ", images);
-      downloadImages(images);
+      downloadImages(images, tab.title);
     });
   }
 }
@@ -152,13 +153,15 @@ function downloadImagesStatus(allCount, curCount) {
 }
 
 // 下载文件
-function downloadImages(imgObjs) {
+function downloadImages(imgObjs, filePath) {
   allDownloadCount = imgObjs.length;
   downloadCount = 0;
   for(let i=0; i<imgObjs.length; i++){
     let obj = {
-      "url": imgObjs[i].src
+      "url": imgObjs[i].src,
+      "filename": filePath + '/' + imgObjs[i].alt
     };
+    console.log(obj);
     chrome.downloads.download(obj, (downlaodId) => {
       if(downlaodId){
         downloadCount++;
