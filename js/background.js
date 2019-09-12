@@ -9,13 +9,30 @@ function load() {
   window.console.info('background.js load！');
   if(window.$){
     init();
-    // 下载所有图片
+    // 下载选中图片
     let tab = get("tab");
-    $("#downloadAll").click(function (e) {
+    $("#downloadSelected").click(function (e) {
       let images = $(".multi-selected > img");
-      console.log("need download: ", images);
       downloadImages(images, tab.title);
     });
+    // 全选
+    $("#selectAll").click(function (e) {
+      let items = document.querySelectorAll('.item');
+      items.forEach(function (o) {
+        $(o).addClass("multi-selected");
+      })
+    });
+    // 反选
+    $("#selectOther").click(function (e) {
+      let items = document.querySelectorAll('.item');
+      items.forEach(function (o) {
+        if($(o).hasClass('multi-selected')){
+          $(o).removeClass("multi-selected");
+        }else{
+          $(o).addClass("multi-selected");
+        }
+      })
+    })
   }
 }
 window.onload = load();

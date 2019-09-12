@@ -12,18 +12,17 @@
       margin: 0;
       padding: 0;
       border: 0;
-      min-width: 320px;
       color: #777;
-      background-color: #fafafa;
+      background-color: #F3F1FA;
       -moz-user-select: none;
       -khtml-user-select: none;
       user-select: none;
     }
     .main {
-      padding: 20px 10px;
-      background: #fff;
-      border: 1px solid #eaeaea;
-      box-sizing: border-box;
+      /*padding: 20px 10px 0;*/
+      /*background: #fff;*/
+      /*border: 1px solid #eaeaea;*/
+      /*box-sizing: border-box;*/
     }
     .item {
       width: 230px;
@@ -32,11 +31,13 @@
       overflow: hidden;
       border: 1px solid #eaeaea;
       box-sizing: border-box;
-      margin: 5px;
+      margin: 0 15px 15px 0;
       background: #fff;
       position: relative;
       display: inline-block;
       text-align: center;
+      border-radius: 0.625rem;
+      box-shadow: 6px 11px 41px -28px #a99de7;
     }
     .item img {
       width: 90%;
@@ -56,8 +57,13 @@
       font-size: 12px;
     }
     .controller {
-      width: 100%;
-      border-top: 1px solid #efefef;
+      width: 95%;
+      margin: auto;
+      border: 0;
+      border-radius: 0.625rem;
+      background: #fff;
+      box-shadow: 6px 11px 41px -28px #a99de7;
+      padding: 10px 0;
     }
     .range-slider {
       width: 20%;
@@ -73,8 +79,7 @@
       display: inline-block;
     }
     .controller-item {
-      padding: 10px 0;
-      /* border-bottom: 1px solid #efefef; */
+      padding: 15px 30px;
     }
     .loading {
       width: 100%;
@@ -111,20 +116,30 @@
       display: inline-block;
     }
     .button {
-      width: 80px;
       border-radius: 3px;
       font-size: 12px;
-      color: #ff5566;
       letter-spacing: 1.14px;
-      border: 1px solid #ff5566;
-      height: 25px;
-      line-height: 25px;
-      background: #fff;
+      padding: 9px 15px;
       display: inline-block;
     }
-    .button:hover{
+    .button-style-1 {
+      border: 1px solid #ff5566;
+      background: #ff5566;
+      color: #fff;
+    }
+    .button-style-1:hover{
       background: #f56c6c;
       border: 1px solid #f56c6c;
+      color: #fff;
+    }
+    .button-style-2 {
+      border: 1px solid #843cf6;
+      background: #843cf6;
+      color: #fff;
+    }
+    .button-style-2:hover{
+      background: #7571f9;
+      border: 1px solid #7571f9;
       color: #fff;
     }
     .button:focus{
@@ -142,7 +157,7 @@
     .content {
       width: 100%;
       margin: 0 auto;
-      padding: 30px;
+      padding: 50px 30px;
       box-sizing: border-box;
       overflow: hidden;
     }
@@ -163,11 +178,11 @@
     <span>Loading</span>
   </div>
   <div class="main">
-    <div class="header">
-      <p>当前页面：<span id="title"></span></p>
-      <p>当前URL：<span id="url"></span></p>
-      <p>图片数量：<span id="imgCount"></span></p>
-    </div>
+    <!--<div class="header">-->
+      <!--<p>当前页面：<span id="title"></span></p>-->
+      <!--<p>当前URL：<span id="url"></span></p>-->
+      <!--<p>图片数量：<span id="imgCount"></span></p>-->
+    <!--</div>-->
     <div class="controller">
       <div class="controller-item">
         <div class="range-slider-info">宽：</div>
@@ -180,17 +195,18 @@
         </div>
       </div>
       <div class="controller-item">
-        <div class="download-info">下载：</div>
-        <button class="button" id="downloadAll">下载</button>
+        <button class="button button-style-1" id="downloadSelected" style="margin-right: 10px;">下载</button>
+        <button class="button button-style-2" id="selectAll" style="margin-right: 10px;">全选</button>
+        <button class="button button-style-2" id="selectOther">反选</button>
       </div>
-      <div class="controller-item">
-        <div class="download-info">进度：</div>
-        <div class="download-status">
-          <span>
-            <span id="curCount" style="color: #f56c6c;">-</span> / <span id="allCount" style="color: #f56c6c;">-</span>
-          </span>
-        </div>
-      </div>
+      <!--<div class="controller-item">-->
+        <!--<div class="download-info">进度：</div>-->
+        <!--<div class="download-status">-->
+          <!--<span>-->
+            <!--<span id="curCount" style="color: #f56c6c;">-</span> / <span id="allCount" style="color: #f56c6c;">-</span>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
   </div>
   <div class="content">
