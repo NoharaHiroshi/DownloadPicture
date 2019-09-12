@@ -25,13 +25,13 @@
       /*box-sizing: border-box;*/
     }
     .item {
-      width: 230px;
-      height: 230px;
+      width: 240px;
+      height: 240px;
       line-height: 230px;
       overflow: hidden;
       border: 1px solid #eaeaea;
       box-sizing: border-box;
-      margin: 0 15px 15px 0;
+      margin: 0 16px 16px 0;
       background: #fff;
       position: relative;
       display: inline-block;
@@ -58,7 +58,7 @@
     }
     .controller {
       width: 95%;
-      margin: auto;
+      margin: 50px auto 10px;
       border: 0;
       border-radius: 0.625rem;
       background: #fff;
@@ -84,7 +84,7 @@
     .loading {
       width: 100%;
       height: 100%;
-      background: #fff;
+      background: #F3F1FA;
       z-index: 999;
       position: fixed;
     }
@@ -119,7 +119,7 @@
       border-radius: 3px;
       font-size: 12px;
       letter-spacing: 1.14px;
-      padding: 9px 15px;
+      padding: 6px 15px;
       display: inline-block;
     }
     .button-style-1 {
@@ -146,7 +146,7 @@
       outline: none;
     }
     .download-status {
-      width: 120px;
+      width: 280px;
       display: inline-block;
       font-size: 12px;
       color: #888888;
@@ -170,6 +170,43 @@
       height: 30px;
       line-height: 30px;
     }
+    .input-style {
+      height: 35px;
+      line-height: 35px;
+      border: 1px solid #dadada;
+      width: 100%;
+      color: #888;
+      padding: 0 5px;
+    }
+    .input-style:focus {
+      border: 1px solid #f56c6c !important;
+      outline-offset: 0;
+      outline: -webkit-focus-ring-color auto 0;
+      outline-color: -webkit-focus-ring-color;
+      outline-style: auto;
+      outline-width: 0;
+    }
+    .progress {
+      display: flex;
+      overflow: hidden;
+      height: 6px;
+      font-size: 0.65625rem;
+      background-color: #e9ecef;
+    }
+    .progress-bar {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+      height: 6px;
+      text-align: center;
+      white-space: nowrap;
+      background-color: #7571f9;
+      transition: width 0.6s ease;
+    }
+    .bg-primary {
+      background-color: #7571f9 !important;
+    }
 	</style>
 </head>
 <body>
@@ -183,6 +220,9 @@
       <!--<p>当前URL：<span id="url"></span></p>-->
       <!--<p>图片数量：<span id="imgCount"></span></p>-->
     <!--</div>-->
+    <div class="progress" id="download_progress" style="display:none;">
+      <div class="progress-bar bg-primary" id="download_bar"></div>
+    </div>
     <div class="controller">
       <div class="controller-item">
         <div class="range-slider-info">宽：</div>
@@ -192,6 +232,12 @@
         <div class="range-slider-info">高：</div>
         <div class="range-slider">
           <input type="text" class="js-range-slider height-range-slider" name="height_range" value="" />
+        </div>
+      </div>
+      <div class="controller-item">
+        <div class="download-info">存储：</div>
+        <div class="download-status">
+          <input type="text" class="input-style" id="storageFile" value="" />
         </div>
       </div>
       <div class="controller-item">

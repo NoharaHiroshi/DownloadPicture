@@ -69,9 +69,9 @@ function multiSelect() {
       top2 = top + $dom.height();
 
     if (!(left > mLeft2 || left2 < mLeft || top > mTop2 || top2 < mTop)) {
-      $dom.addClass('multi-selected')
+      $dom.addClass('multi-selected');
     } else {
-      $dom.removeClass('multi-selected')
+      $dom.removeClass('multi-selected');
     }
 
   })

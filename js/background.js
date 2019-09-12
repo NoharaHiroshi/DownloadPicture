@@ -9,11 +9,10 @@ function load() {
   window.console.info('background.js load！');
   if(window.$){
     init();
-    // 下载选中图片
-    let tab = get("tab");
     $("#downloadSelected").click(function (e) {
+      let fileName = $("#storageFile").val();
       let images = $(".multi-selected > img");
-      downloadImages(images, tab.title);
+      downloadImages(images, fileName);
     });
     // 全选
     $("#selectAll").click(function (e) {
@@ -41,10 +40,10 @@ window.onload = load();
 function init() {
   let tab = get("tab");
   let images = get("images");
-  console.log(tab);
   $("#title").text(tab.title);
   $("#url").text(tab.url);
   $("#imgCount").text(images.length);
+  $("#storageFile").val(tab.title);
   let container = $(".container");
   let maxWidth = 0;
   let maxHeight = 0;
@@ -169,7 +168,7 @@ function downloadImagesStatus(allCount, curCount) {
     $("#curCount").text(curCount);
 }
 
-// 下载文件
+// (下载文件
 function downloadImages(imgObjs, filePath) {
   allDownloadCount = imgObjs.length;
   downloadCount = 0;
@@ -183,8 +182,21 @@ function downloadImages(imgObjs, filePath) {
       if(downlaodId){
         downloadCount++;
         console.log("allDownloadCount: ", allDownloadCount, "currentDownLoadCount: ", downloadCount);
-        downloadImagesStatus(allDownloadCount, downloadCount);
+        // downloadImagesStatus(allDownloadCount, downloadCount);
+        downloadBar(downloadCount, allDownloadCount);
       }
     })
+  }
+}
+
+// 下载百分比
+function downloadBar(cur, all){
+  $("#download_progress").css("display", "block");
+  let per = parseInt((cur / all) * 100);
+  $("#download_bar").width(per + "%");
+  if(per === 100){
+    setTimeout(function () {
+      $("#download_progress").css("display", "none");
+    }, 3000)
   }
 }
