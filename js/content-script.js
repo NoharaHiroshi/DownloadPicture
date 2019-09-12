@@ -16,6 +16,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
         "result": images
       };
       sendResponse(result);
+    }else if(request.event === "puzzleImages"){
+      puzzleImages();
+      let result = {
+        "req": request,
+        "sender": sender,
+        "result": "success"
+      };
+      sendResponse(result);
     }
   }else{
     sendResponse("no registered event");
@@ -74,4 +82,31 @@ function sendMessage(info) {
   chrome.runtime.sendMessage(info, function (response) {
     console.log(response);
   });
+}
+
+// 智能拼接当前页面图片
+function puzzleImages() {
+  let main = $("#puzzleImages");
+  console.log("main length", main.length);
+  if(main.length === 0){
+    $('body').append('<div class="puzzle-images" id="puzzleImages"><div class="content" id="puzzleContent"></div></div>');
+    $("#puzzleImages").css({
+      "top": "0",
+      "margin": "0 auto",
+      "position": "fixed",
+      "width": "100%",
+      "height": "100%",
+      "background": "rgba(0,0,0,0.3)",
+      "z-index": "999",
+      "padding": "20px"
+    });
+    $("#puzzleContent").css({
+      "width": "80%",
+      "height": "100%",
+      "background": "#fff",
+      "margin": "0 auto",
+      "box-shadow": "6px 11px 41px -28px #a99de7",
+      "border-radius": "5px"
+    })
+  }
 }

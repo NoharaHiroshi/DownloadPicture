@@ -12,6 +12,13 @@ $("#open_background").click(e => {
   });
 });
 
+// 智能拼页
+$("#puzzle_images").click(e => {
+  getCurrentTab((tab) => {
+    puzzleImages(tab.id);
+  });
+});
+
 // 保存数据到localStorage
 function save(key, value) {
   localStorage[key] = JSON.stringify(value);
@@ -43,6 +50,17 @@ function getCurrentImages(tabId, callback) {
       let images = response.result;
       console.log("getCurrentImages", images);
       save("images", images);
+      if(callback) callback();
+    }
+  });
+}
+
+// 智能拼图事件
+function puzzleImages(tabId, callback) {
+  let req = {"event": "puzzleImages"};
+  chrome.tabs.sendMessage(tabId, req, function(response) {
+    if(response){
+      console.log("puzzleImages");
       if(callback) callback();
     }
   });
