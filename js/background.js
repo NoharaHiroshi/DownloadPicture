@@ -41,6 +41,7 @@ function init() {
   let tab = get("tab");
   // 拷贝一份图片信息，防止用户在筛选时关闭源标签页
   let _images = get(tab.id);
+  _images = unique(_images, "url");
   save("curTab", _images);
   let images = get("curTab");
   $("#title").text(tab.title);
@@ -118,7 +119,7 @@ function initRangeSelect(maxWidth, maxHeight) {
     grid: true,
     min: 0,
     max: maxHeight,
-    from: 500,
+    from: 0,
     to: maxHeight,
     postfix: "px",
     onChange: function (data) {//数据变化时触发
@@ -240,3 +241,9 @@ chrome.tabs.onRemoved.addListener((tabId) => {
   console.log("delete TabId: ", tabId);
   del(tabId);
 });
+
+// 数组去重
+function unique(arr, type) {
+  const res = new Map();
+  return arr.filter((a) => !res.has(a[type]) && res.set(a[type], 1));
+}
