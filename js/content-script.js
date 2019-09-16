@@ -108,5 +108,6 @@ function puzzleImages() {
       "box-shadow": "6px 11px 41px -28px #a99de7",
       "border-radius": "5px"
     })
+
   }
 }

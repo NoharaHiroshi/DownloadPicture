@@ -39,7 +39,7 @@ window.onload = load();
 // 初始化
 function init() {
   let tab = get("tab");
-  let images = get("images");
+  let images = get(tab.id);
   $("#title").text(tab.title);
   $("#url").text(tab.url);
   $("#imgCount").text(images.length);
@@ -80,9 +80,10 @@ function init() {
 }
 
 function updateImage(fromW, toW, fromH, toH) {
+  let tab = get("tab");
   let container = $(".container");
   container.html("");
-  let images = get("images");
+  let images = get(tab.id);
   for(let i=0; i<images.length; i++){
     getImageSize(images[i].url, (w, h)=>{
       if((fromW <= w && w <= toW) && (fromH <= h && h <= toH)){
@@ -137,9 +138,21 @@ function save(key, value) {
   localStorage[key] = JSON.stringify(value);
 }
 
+// 保存数据到localStorage， 如果存在当前key， 则value组成list
+function saveList(key, value) {
+  let v = get(key);
+  v.push(value);
+  save(key, v);
+}
+
 // 从localStorage获取数据
 function get(key) {
-  return JSON.parse(localStorage[key]);
+  return localStorage[key] ? JSON.parse(localStorage[key]): null;
+}
+
+// 删除localStorage中指定key的数据
+function del(key) {
+  localStorage.removeItem(key);
 }
 
 // 获取图片大小
@@ -200,3 +213,22 @@ function downloadBar(cur, all){
     }, 3000)
   }
 }
+
+// 网络请求监听
+chrome.webRequest.onBeforeRequest.addListener(details => {
+  if(details.type === "image"){
+    console.log("webRequest: ", details);
+    let img = {
+      "tabId": details.tabId,
+      "initiator": details.initiator,
+      "url": details.url,
+    };
+    saveList(details.tabId, img);
+  }
+},{urls: ["<all_urls>"]});
+
+// 监听关闭标签页事件
+chrome.tabs.onRemoved.addListener((tabId) => {
+  console.log("delete TabId: ", tabId);
+  del(tabId);
+});

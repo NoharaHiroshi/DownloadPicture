@@ -9,8 +9,7 @@
         "default_title": "(〃'▽'〃)"
     },
 	"background": {
-      "scripts": ["js/background.js"],
-      "persistent": false
+      "scripts": ["js/background.js"]
     },
     "content_security_policy": "script-src 'self'; object-src 'self'",
     "permissions": [
@@ -18,6 +17,7 @@
 		"tabs",
 		"downloads",
 		"contextMenus",
+        "webRequest",
         "webRequestBlocking",
         "storage",
         "http://*/*",
