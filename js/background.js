@@ -39,7 +39,10 @@ window.onload = load();
 // 初始化
 function init() {
   let tab = get("tab");
-  let images = get(tab.id);
+  // 拷贝一份图片信息，防止用户在筛选时关闭源标签页
+  let _images = get(tab.id);
+  save("curTab", _images);
+  let images = get("curTab");
   $("#title").text(tab.title);
   $("#url").text(tab.url);
   $("#imgCount").text(images.length);
@@ -80,10 +83,9 @@ function init() {
 }
 
 function updateImage(fromW, toW, fromH, toH) {
-  let tab = get("tab");
   let container = $(".container");
   container.html("");
-  let images = get(tab.id);
+  let images = get("curTab");
   for(let i=0; i<images.length; i++){
     getImageSize(images[i].url, (w, h)=>{
       if((fromW <= w && w <= toW) && (fromH <= h && h <= toH)){
@@ -141,8 +143,14 @@ function save(key, value) {
 // 保存数据到localStorage， 如果存在当前key， 则value组成list
 function saveList(key, value) {
   let v = get(key);
-  v.push(value);
-  save(key, v);
+  if(v){
+    v.push(value);
+    save(key, v);
+  }else{
+    let _v = [];
+    _v.push(value);
+    save(key, _v);
+  }
 }
 
 // 从localStorage获取数据
