@@ -45,47 +45,64 @@ function getImages() {
       src = img.src;
       fileName = src.split("/").pop().split("?")[0];
       fileType = fileName.split(".").pop().split("?")[0];
-      let imageItem = {
-        url: src,
-        fileName: fileName,
-        fileType: fileType,
-        cls: $(img).attr("class")
-      };
-      fetch(src).then(resp => resp.blob()).then(blob => {
-        let size = blob.size;
-        size = (size / 1024).toFixed(2) + ' kb';
-        imageItem.fielSize = size;
+      getImageSize(src, (w, h)=>{
+        let imageItem = {
+          url: src,
+          fileName: fileName,
+          fileType: fileType,
+          cls: $(img).attr("class"),
+          width: w,
+          height: h
+        };
+        fetch(src).then(resp => resp.blob()).then(blob => {
+          let size = blob.size;
+          size = (size / 1024).toFixed(2) + ' kb';
+          imageItem.fielSize = size;
+        });
+        imagesInfo.push(imageItem);
       });
-      imagesInfo.push(imageItem);
     }
     // 去重
     imagesInfo = unique(imagesInfo, "url");
     console.log("images: ", imagesInfo);
     return imagesInfo;
-    // let sendImagesInfo = getEventObj("sendImages", imagesInfo);
-    // sendMessage(sendImagesInfo);
-    // let changeBadgeInfo = getEventObj("changeBadge", imagesInfo.length.toString());
-    // sendMessage(changeBadgeInfo);
   }else{
     console.log("未查询到当前页面图片");
     return null
   }
 }
 
+// 获取图片大小
+function getImageSize(url, callback) {
+  let img = new Image();
+  img.src = url;
+  // 如果图片被缓存，则直接返回缓存数据
+  if (img.complete) {
+    callback(img.width, img.height);
+  } else {
+    img.onload = function () {
+      callback(img.width, img.height);
+    }
+  }
+}
+
 //  分析当前图片链接
 function analysisImageUrl() {
-  let imageSource = [];
+  let imageSource = {};
   let images = getImages();
   if(images && images.length){
     let i,
-      img,
-      src,
-      fileName,
-      fileType;
+      img;
     for(i=0; i<images.length; i++){
-      console.log("anaImage： ", images[i]);
-      console.log("anaImageClass： ", images[i].cls);
+      img = images[i];
+      if(!imageSource.hasOwnProperty(img.cls)){
+        imageSource[img.cls] = [img];
+      }else{
+        imageSource[img.cls].push(img);
+      }
     }
+    console.log(imageSource);
+    return imageSource;
   }
 }
 
@@ -124,8 +141,39 @@ function puzzleImages() {
       "background": "#fff",
       "margin": "0 auto",
       "box-shadow": "6px 11px 41px -28px #a99de7",
-      "border-radius": "5px"
+      "border-radius": "5px",
+      "text-align": "center",
+      "overflow": "auto"
     });
-    analysisImageUrl();
+    let anaImages = analysisImageUrl();
+    let tmp = 0;
+    let tmpK;
+    for(let k in anaImages){
+      let v = anaImages[k];
+      if(v.length > tmp){
+        tmp = v.length;
+        tmpK = k;
+      }
+    }
+    let renderImages = anaImages[tmpK];
+    for(let i in renderImages){
+      let w = 600;
+      console.log("renderImages[i]", parseInt(renderImages[i].height), parseInt(renderImages[i].width), parseInt(renderImages[i].width) / w);
+      let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
+      $("#puzzleContent").append("<img class='puzzleImg' style='width:"+w+"px;height:"+h+"px;text-align:center;margin:0 auto;'" +
+        "data-src='" + renderImages[i].url +"'>");
+    }
+    let domHeight = $("#puzzleContent").innerHeight();
+    let randeredImgs = $(".puzzleImg");
+    $("#puzzleContent").scroll(function () {
+      let scrollTop = $("#puzzleContent").scrollTop();
+      for(let i=0; i < randeredImgs.length; i++){
+        console.log("距离顶部高度：", scrollTop);
+        console.log("当前图片距离顶部高度" + "[" + i +"]: " + randeredImgs[i].offsetTop);
+        if(randeredImgs[i].offsetTop < scrollTop + domHeight ){
+          randeredImgs[i].src = randeredImgs[i].getAttribute('data-src');
+        }
+      }
+    });
   }
 }

@@ -225,7 +225,7 @@ function downloadBar(cur, all){
 
 // 网络请求监听
 chrome.webRequest.onBeforeRequest.addListener(details => {
-  let host = details.initiator.split(":")[0];
+  let host = details.initiator ? details.initiator.split(":")[0]: null;
   if(details.type === "image" && host !== "chrome-extension"){
     console.log("webRequest: ", details);
     let src = details.url;
