@@ -48,7 +48,8 @@ function getImages() {
       let imageItem = {
         url: src,
         fileName: fileName,
-        fileType: fileType
+        fileType: fileType,
+        cls: $(img).attr("class")
       };
       fetch(src).then(resp => resp.blob()).then(blob => {
         let size = blob.size;
@@ -68,6 +69,23 @@ function getImages() {
   }else{
     console.log("未查询到当前页面图片");
     return null
+  }
+}
+
+//  分析当前图片链接
+function analysisImageUrl() {
+  let imageSource = [];
+  let images = getImages();
+  if(images && images.length){
+    let i,
+      img,
+      src,
+      fileName,
+      fileType;
+    for(i=0; i<images.length; i++){
+      console.log("anaImage： ", images[i]);
+      console.log("anaImageClass： ", images[i].cls);
+    }
   }
 }
 
@@ -97,7 +115,7 @@ function puzzleImages() {
       "width": "100%",
       "height": "100%",
       "background": "rgba(0,0,0,0.3)",
-      "z-index": "999",
+      "z-index": "9999",
       "padding": "20px"
     });
     $("#puzzleContent").css({
@@ -107,7 +125,7 @@ function puzzleImages() {
       "margin": "0 auto",
       "box-shadow": "6px 11px 41px -28px #a99de7",
       "border-radius": "5px"
-    })
-
+    });
+    analysisImageUrl();
   }
 }

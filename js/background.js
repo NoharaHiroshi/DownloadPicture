@@ -225,12 +225,18 @@ function downloadBar(cur, all){
 
 // 网络请求监听
 chrome.webRequest.onBeforeRequest.addListener(details => {
-  if(details.type === "image"){
+  let host = details.initiator.split(":")[0];
+  if(details.type === "image" && host !== "chrome-extension"){
     console.log("webRequest: ", details);
+    let src = details.url;
+    let fileName = src.split("/").pop().split("?")[0];
+    let fileType = fileName.split(".").pop().split("?")[0];
     let img = {
       "tabId": details.tabId,
       "initiator": details.initiator,
-      "url": details.url,
+      "url": src,
+      "fileName": fileName,
+      "fileType": fileType
     };
     saveList(details.tabId, img);
   }
