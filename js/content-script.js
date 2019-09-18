@@ -124,41 +124,12 @@ function puzzleImages() {
   let main = $("#puzzleImages");
   console.log("main length", main.length);
   if(main.length === 0){
-    $('body').append('<div class="puzzle-images" id="puzzleImages"><div class="content" id="puzzleContent"><div id="closeImg">x</div></div></div>');
-    $("#puzzleImages").css({
-      "top": "0",
-      "margin": "0 auto",
-      "position": "fixed",
-      "width": "100%",
-      "height": "100%",
-      "background": "rgba(0,0,0,0.3)",
-      "z-index": "9999",
-      "padding": "20px"
-    });
-    $("#puzzleContent").css({
-      "width": "80%",
-      "height": "100%",
-      "background": "#fff",
-      "margin": "0 auto",
-      "box-shadow": "6px 11px 41px -28px #a99de7",
-      "border-radius": "5px",
-      "text-align": "center",
-      "overflow": "auto",
-      "padding": "20px 0",
-      "box-sizing": "border-box",
-      "position": "relative",
-    });
-    $("#closeImg").css({
-      "position": "absolute",
-      "background": "#ff5566",
-      "width": "25px",
-      "height": "25px",
-      "cursor": "pointer",
-      "border-radius": "2px",
-      "right": "20px",
-      "color": "#fff",
-      "line-height": "25px"
-    });
+    $('body').append('<div class="puzzle-images" id="puzzleImages">' +
+      '<div class="puzzle-content" id="puzzleContent">' +
+      '<div class="close-img" id="closeImg">x</div>' +
+      '</div>' +
+      '</div>');
+    let content = $("#puzzleContent");
     let anaImages = analysisImageUrl();
     let tmp = 0;
     let tmpK;
@@ -173,22 +144,33 @@ function puzzleImages() {
     for(let i in renderImages){
       let w = 800;
       let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
-      $("#puzzleContent").append("<img class='puzzleImg' style='width:"+w+"px;height:"+h+"px;'" +
+      content.append("<img class='puzzle-img' style='width:"+w+"px;height:"+h+"px;'" +
         "data-src='" + renderImages[i].url +"'>");
     }
-    let domHeight = $("#puzzleContent").innerHeight();
-    let randeredImgs = $(".puzzleImg");
-    $("#puzzleContent").scroll(function () {
-      let scrollTop = $("#puzzleContent").scrollTop();
-      for(let i=0; i < randeredImgs.length; i++){
-        if(randeredImgs[i].offsetTop < scrollTop + domHeight ){
-          randeredImgs[i].src = randeredImgs[i].getAttribute('data-src');
+    let domHeight = content.innerHeight();
+    let renderImg = $(".puzzle-img");
+    lazyLoad(renderImg, domHeight);
+    content.scroll(() => {
+      let scrollTop = content.scrollTop();
+      for(let i=0; i < renderImg.length; i++){
+        if(renderImg[i].offsetTop < scrollTop + domHeight ){
+          renderImg[i].src = renderImg[i].getAttribute('data-src');
         }
       }
+    });
+    $("#closeImg").click(function(){
+      $("#puzzleImages").remove();
     });
   }
 }
 
-$("#closeImg").click(function(){
-  $("#puzzleImages").remove();
-});
+// 懒加载图片
+function lazyLoad(renderImg, domHeight) {
+  let content = $("#puzzleContent");
+  let scrollTop = content.scrollTop();
+  for(let i=0; i < renderImg.length; i++){
+    if(renderImg[i].offsetTop < scrollTop + domHeight ){
+      renderImg[i].src = renderImg[i].getAttribute('data-src');
+    }
+  }
+}

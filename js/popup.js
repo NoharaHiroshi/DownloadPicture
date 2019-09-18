@@ -16,6 +16,7 @@ $("#open_background").click(e => {
 $("#puzzle_images").click(e => {
   getCurrentTab((tab) => {
     puzzleImages(tab.id);
+    window.close();
   });
 });
 
