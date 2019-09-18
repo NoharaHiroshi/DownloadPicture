@@ -211,10 +211,11 @@ function regImgSrc(callback) {
       });
     }
     console.log("imagesInfo: ", imagesInfo);
-    setTimeout(() => {
+    let timer = setInterval(() => {
       console.log("imagesInfo.length: ", Object.keys(imagesInfo).length);
       console.log("regImageList.length: ", regImageList.length);
       if(Object.keys(imagesInfo).length === regImageList.length){
+        clearInterval(timer);
         callback(imagesInfo);
       }
     }, 500);
