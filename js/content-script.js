@@ -124,7 +124,7 @@ function puzzleImages() {
   let main = $("#puzzleImages");
   console.log("main length", main.length);
   if(main.length === 0){
-    $('body').append('<div class="puzzle-images" id="puzzleImages"><div class="content" id="puzzleContent"></div></div>');
+    $('body').append('<div class="puzzle-images" id="puzzleImages"><div class="content" id="puzzleContent"><div id="closeImg">x</div></div></div>');
     $("#puzzleImages").css({
       "top": "0",
       "margin": "0 auto",
@@ -143,7 +143,21 @@ function puzzleImages() {
       "box-shadow": "6px 11px 41px -28px #a99de7",
       "border-radius": "5px",
       "text-align": "center",
-      "overflow": "auto"
+      "overflow": "auto",
+      "padding": "20px 0",
+      "box-sizing": "border-box",
+      "position": "relative",
+    });
+    $("#closeImg").css({
+      "position": "absolute",
+      "background": "#ff5566",
+      "width": "25px",
+      "height": "25px",
+      "cursor": "pointer",
+      "border-radius": "2px",
+      "right": "20px",
+      "color": "#fff",
+      "line-height": "25px"
     });
     let anaImages = analysisImageUrl();
     let tmp = 0;
@@ -157,10 +171,9 @@ function puzzleImages() {
     }
     let renderImages = anaImages[tmpK];
     for(let i in renderImages){
-      let w = 600;
-      console.log("renderImages[i]", parseInt(renderImages[i].height), parseInt(renderImages[i].width), parseInt(renderImages[i].width) / w);
+      let w = 800;
       let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
-      $("#puzzleContent").append("<img class='puzzleImg' style='width:"+w+"px;height:"+h+"px;text-align:center;margin:0 auto;'" +
+      $("#puzzleContent").append("<img class='puzzleImg' style='width:"+w+"px;height:"+h+"px;'" +
         "data-src='" + renderImages[i].url +"'>");
     }
     let domHeight = $("#puzzleContent").innerHeight();
@@ -168,8 +181,6 @@ function puzzleImages() {
     $("#puzzleContent").scroll(function () {
       let scrollTop = $("#puzzleContent").scrollTop();
       for(let i=0; i < randeredImgs.length; i++){
-        console.log("距离顶部高度：", scrollTop);
-        console.log("当前图片距离顶部高度" + "[" + i +"]: " + randeredImgs[i].offsetTop);
         if(randeredImgs[i].offsetTop < scrollTop + domHeight ){
           randeredImgs[i].src = randeredImgs[i].getAttribute('data-src');
         }
@@ -177,3 +188,7 @@ function puzzleImages() {
     });
   }
 }
+
+$("#closeImg").click(function(){
+  $("#puzzleImages").remove();
+});
