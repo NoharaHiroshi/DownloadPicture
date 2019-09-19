@@ -127,12 +127,13 @@ function puzzleImages() {
     let content = $("#puzzleContent");
     regImgSrc((renderImages) => {
       console.log("callback renderImages: ", renderImages);
+      let w = 800;
+      let h = 1000;
       for(let i in renderImages){
         console.log("i: ", i);
         console.log(renderImages[i]);
-        let w = 800;
-        let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
-        content.append("<img class='puzzle-img' style='width:"+w+"px;height:"+h+"px;'" +
+        // let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
+        content.append("<img class='puzzle-img' width='" + w +"' height='" + h + "' " +
           "data-src='" + renderImages[i].url +"'>");
       }
       let domHeight = content.innerHeight();
@@ -143,6 +144,9 @@ function puzzleImages() {
         for(let i=0; i < renderImg.length; i++){
           if(renderImg[i].offsetTop < scrollTop + domHeight ){
             renderImg[i].src = renderImg[i].getAttribute('data-src');
+            getImageSize(renderImg[i].src, (_w, _h)=>{
+              renderImg[i].height = _h / (_w / w);
+            });
           }
         }
       });
@@ -157,9 +161,13 @@ function puzzleImages() {
 function lazyLoad(renderImg, domHeight) {
   let content = $("#puzzleContent");
   let scrollTop = content.scrollTop();
+  let w = 800;
   for(let i=0; i < renderImg.length; i++){
     if(renderImg[i].offsetTop < scrollTop + domHeight ){
       renderImg[i].src = renderImg[i].getAttribute('data-src');
+      getImageSize(renderImg[i].src, (_w, _h)=>{
+        renderImg[i].height = _h / (_w / w);
+      });
     }
   }
 }
@@ -200,15 +208,20 @@ function regImgSrc(callback) {
       let src = regImageList[i];
       let fileName = src.split("/").pop().split("?")[0];
       let fileType = fileName.split(".").pop().split("?")[0];
-      getImageSize(src, (w, h)=>{
-        imagesInfo[i] = {
-          url: src,
-          fileName: fileName,
-          fileType: fileType,
-          width: w,
-          height: h
-        };
-      });
+      // getImageSize(src, (w, h)=>{
+      //   imagesInfo[i] = {
+      //     url: src,
+      //     fileName: fileName,
+      //     fileType: fileType,
+      //     width: w,
+      //     height: h
+      //   };
+      // });
+      imagesInfo[i] = {
+        url: src,
+        fileName: fileName,
+        fileType: fileType,
+      };
     }
     console.log("imagesInfo: ", imagesInfo);
     let timer = setInterval(() => {
