@@ -35,16 +35,11 @@ function getImages() {
   let imagesInfo = [];
   let images = $('img');
   if(images && images.length){
-    let i,
-      img,
-      src,
-      fileName,
-      fileType;
-    for(i=0; i<images.length; i++){
-      img = images[i];
-      src = img.src;
-      fileName = src.split("/").pop().split("?")[0];
-      fileType = fileName.split(".").pop().split("?")[0];
+    for(let i=0; i<images.length; i++){
+      let img = images[i];
+      let src = img.src;
+      let fileName = src.split("/").pop().split("?")[0];
+      let fileType = fileName.split(".").pop().split("?")[0];
       getImageSize(src, (w, h)=>{
         let imageItem = {
           url: src,
@@ -117,7 +112,6 @@ function sendMessage(info) {
 // 智能拼接当前页面图片
 function puzzleImages() {
   let main = $("#puzzleImages");
-  console.log("main length", main.length);
   if(main.length === 0){
     $('body').append('<div class="puzzle-images" id="puzzleImages">' +
       '<div class="puzzle-content" id="puzzleContent">' +
@@ -125,20 +119,20 @@ function puzzleImages() {
       '</div>' +
       '</div>');
     let content = $("#puzzleContent");
-    regImgSrc((renderImages) => {
+    $("#closeImg").click(function(){
+      $("#puzzleImages").remove();
+    });
+    let renderImages = calcImgSrcBySelect();
+    if(renderImages.length){
+      let domHeight = content.innerHeight();
       console.log("callback renderImages: ", renderImages);
       let w = 800;
       let h = 1000;
       for(let i in renderImages){
-        console.log("i: ", i);
-        console.log(renderImages[i]);
-        // let h = (parseInt(renderImages[i].height) / (parseInt(renderImages[i].width) / w));
         content.append("<img class='puzzle-img' width='" + w +"' height='" + h + "' " +
           "data-src='" + renderImages[i].url +"'>");
       }
-      let domHeight = content.innerHeight();
       let renderImg = $(".puzzle-img");
-      lazyLoad(renderImg, domHeight);
       content.scroll(() => {
         let scrollTop = content.scrollTop();
         for(let i=0; i < renderImg.length; i++){
@@ -150,87 +144,38 @@ function puzzleImages() {
           }
         }
       });
-      $("#closeImg").click(function(){
-        $("#puzzleImages").remove();
-      });
-    });
-  }
-}
-
-// 懒加载图片
-function lazyLoad(renderImg, domHeight) {
-  let content = $("#puzzleContent");
-  let scrollTop = content.scrollTop();
-  let w = 800;
-  for(let i=0; i < renderImg.length; i++){
-    if(renderImg[i].offsetTop < scrollTop + domHeight ){
-      renderImg[i].src = renderImg[i].getAttribute('data-src');
-      getImageSize(renderImg[i].src, (_w, _h)=>{
-        renderImg[i].height = _h / (_w / w);
-      });
+      content.scrollTop(1);
     }
   }
 }
 
-// 推算图片地址
-function regImgSrc(callback) {
-  // <select>类型的翻页
-  let selectValue;
+// 推算图片地址(select翻页)
+function calcImgSrcBySelect() {
   // 正则替换后的图片地址列表
   let regImageList = [];
+  let selected = $("option:selected");
   let $select = $("option");
   let images = getImages();
-  console.log($select);
-  if($select.length){
-    for(let i=0; i<$select.length; i++){
-      let selected = $select[i];
-      if(selected.selected){
-        selectValue = selected.value;
-        console.log(selectValue);
-        break;
-      }
-    }
+  if(selected.length){
+    let selectValue = selected[0].value;
     let imgReg = new RegExp(selectValue);
     for(let image of images){
       if(imgReg.test(image.url)){
-        console.log(image);
         for(let i=0; i<$select.length; i++){
           let selected = $select[i];
-          let newImgUrl = image.url.replace(imgReg, selected.value);
-          regImageList.push(newImgUrl);
+          let src= image.url.replace(imgReg, selected.value);
+          let fileName = src.split("/").pop().split("?")[0];
+          let fileType = fileName.split(".").pop().split("?")[0];
+          let imgItem = {
+            url: src,
+            fileName: fileName,
+            fileType: fileType,
+          };
+          regImageList.push(imgItem);
         }
         break;
       }
     }
-    console.log("regImageList: ", regImageList);
-    let imagesInfo = {};
-    for(let i=0; i<regImageList.length; i++){
-      let src = regImageList[i];
-      let fileName = src.split("/").pop().split("?")[0];
-      let fileType = fileName.split(".").pop().split("?")[0];
-      // getImageSize(src, (w, h)=>{
-      //   imagesInfo[i] = {
-      //     url: src,
-      //     fileName: fileName,
-      //     fileType: fileType,
-      //     width: w,
-      //     height: h
-      //   };
-      // });
-      imagesInfo[i] = {
-        url: src,
-        fileName: fileName,
-        fileType: fileType,
-      };
-    }
-    console.log("imagesInfo: ", imagesInfo);
-    let timer = setInterval(() => {
-      console.log("imagesInfo.length: ", Object.keys(imagesInfo).length);
-      console.log("regImageList.length: ", regImageList.length);
-      if(Object.keys(imagesInfo).length === regImageList.length){
-        clearInterval(timer);
-        callback(imagesInfo);
-      }
-    }, 500);
   }
+  return regImageList;
 }
