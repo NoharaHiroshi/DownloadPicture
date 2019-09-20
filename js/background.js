@@ -80,7 +80,7 @@ function init() {
       clearInterval(timer);
       loading(false);
     }
-  }, 1000)
+  }, 500)
 }
 
 function updateImage(fromW, toW, fromH, toH) {

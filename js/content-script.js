@@ -76,26 +76,6 @@ function getImageSize(url, callback) {
   }
 }
 
-//  分析当前图片链接
-function analysisImageUrl() {
-  let imageSource = {};
-  let images = getImages();
-  if(images && images.length){
-    let i,
-      img;
-    for(i=0; i<images.length; i++){
-      img = images[i];
-      if(!imageSource.hasOwnProperty(img.cls)){
-        imageSource[img.cls] = [img];
-      }else{
-        imageSource[img.cls].push(img);
-      }
-    }
-    console.log(imageSource);
-    return imageSource;
-  }
-}
-
 // 数组去重
 function unique(arr, type) {
   const res = new Map();
@@ -122,7 +102,7 @@ function puzzleImages() {
     $("#closeImg").click(function(){
       $("#puzzleImages").remove();
     });
-    let renderImages = calcImgSrcBySelect();
+    let renderImages = calcImgSrcBySelect().length ? calcImgSrcBySelect(): getImages();
     if(renderImages.length){
       let domHeight = content.innerHeight();
       console.log("callback renderImages: ", renderImages);
