@@ -24,6 +24,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
         "result": "success"
       };
       sendResponse(result);
+    }else if(request.event === "openNotePanel"){
+      openNotePanel();
+      let result = {
+        "req": request,
+        "sender": sender,
+        "result": "success"
+      };
+      sendResponse(result);
     }
   }else{
     sendResponse("no registered event");
@@ -158,4 +166,21 @@ function calcImgSrcBySelect() {
     }
   }
   return regImageList;
+}
+
+// 打开笔记操作界面
+function openNotePanel() {
+  console.log("openNotePanel");
+  $('body').append('<div class="note-panel">' +
+    '<div class="note-bar" id="noteBar">' +
+     '<span>标记：</span>' +
+      '<div class="note-bar-item" id="barYellow"></div>' +
+      '<div class="note-bar-item" id="barBlue"></div>' +
+      '<div class="note-bar-item" id="barRed"></div>' +
+    '</div>');
+  $(".note-bar-item").click(function (e) {
+    console.log(e.target);
+    $(".note-bar-item").removeClass("bar-active");
+    $(e.target).addClass("bar-active");
+  })
 }

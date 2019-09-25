@@ -20,6 +20,14 @@ $("#puzzle_images").click(e => {
   });
 });
 
+// 做笔记
+$("#open_note_panel").click(e => {
+  getCurrentTab((tab) => {
+   openNotePanel(tab.id);
+    window.close();
+  });
+});
+
 // 保存数据到localStorage
 function save(key, value) {
   localStorage[key] = JSON.stringify(value);
@@ -62,6 +70,17 @@ function puzzleImages(tabId, callback) {
   chrome.tabs.sendMessage(tabId, req, function(response) {
     if(response){
       console.log("puzzleImages");
+      if(callback) callback();
+    }
+  });
+}
+
+// 打开笔记功能面板
+function openNotePanel(tabId, callback) {
+  let req = {"event": "openNotePanel"};
+  chrome.tabs.sendMessage(tabId, req, function(response) {
+    if(response){
+      console.log("openNotePanel");
       if(callback) callback();
     }
   });

@@ -57,3 +57,58 @@
     border-radius: 2px;
     background-color: rgb(255, 85, 102);
 }
+.note-panel {
+    position: fixed;
+    height: 60px;
+    line-height: 60px;
+    background: rgba(255,255,255,1);
+    width: 100%;
+    top: 0;
+    z-index: 999;
+    box-shadow: 6px 11px 41px -28px #a99de7;
+}
+
+.note-bar {
+    display: inline-block;
+    position: relative;
+    float: right;
+    right: 20px;
+}
+
+.note-bar span {
+    font-size: 13px;
+    color: #888;
+}
+
+.note-bar-item {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+#barYellow {
+    background: rgba(240, 163, 10, 1);
+}
+#barYellow:hover {
+    border: 2px solid #efefef;
+}
+
+#barBlue {
+    background: rgba(27, 161, 226, 1);
+}
+#barBlue:hover {
+    border: 2px solid #efefef;
+}
+
+#barRed {
+    background: rgba(229, 20, 0, 1);
+}
+#barRed:hover {
+    border: 2px solid #efefef;
+}
+.bar-active {
+    border: 2px solid #efefef;
+}
