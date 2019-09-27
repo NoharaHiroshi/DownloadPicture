@@ -201,12 +201,14 @@ function openNotePanel() {
 
 function changeBarColor() {
   let selector = window.getSelection();
+  console.log("selector", selector);
   let selectStr = selector.toString();
   if (selectStr.trim() !== "") {
     let range = selector.getRangeAt(0);
     console.log("range: ", range);
     let temp = document.createElement('span');
-    temp.style.cssText  = "background: " + global_bar_color + ";";
+    temp.style.cssText = "background: " + global_bar_color + ";";
+    temp.className = "note-bar-span";
     console.log("temp: ", temp);
     range.surroundContents(temp);
   }
