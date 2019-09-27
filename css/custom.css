@@ -109,6 +109,13 @@
 #barRed:hover {
     border: 2px solid #efefef;
 }
+#barTrans {
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid #efefef;
+}
+#barTrans:hover {
+    border: 2px solid #efefef;
+}
 .bar-active {
     border: 2px solid #efefef;
 }
