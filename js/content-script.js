@@ -170,8 +170,8 @@ function calcImgSrcBySelect() {
 
 // 打开笔记操作界面
 let global_bar_color;
+let z_index = 0;
 function openNotePanel() {
-  console.log("openNotePanel");
   $('body').append('<div class="note-panel">' +
     '<div class="note-bar" id="noteBar">' +
      '<span>标记：</span>' +
@@ -179,10 +179,22 @@ function openNotePanel() {
       '<div class="note-bar-item" id="barBlue" data="blue"></div>' +
       '<div class="note-bar-item" id="barRed" data="red"></div>' +
       '<div class="note-bar-item" id="barTrans" data="transparent"></div>' +
-    '</div>');
+      '<div class="note-print" id="notePrint">保存</div>' +
+      '<div class="note-close" id="noteClose">关闭</div>' +
+    '</div>'
+  );
+  $("#notePrint").click(function (e) {
+    $(".note-panel").remove();
+    window.print();
+  });
+  $("#noteClose").click(function (e) {
+    $(".note-panel").remove();
+  });
   $(".note-bar-item").click(function (e) {
     $(".note-bar-item").removeClass("bar-active");
     $(e.target).addClass("bar-active");
+    let note_bar_span = $(".note-bar-span");
+    note_bar_span.css("cursor", "default");
     if($(e.target).attr("data") === "yellow"){
       console.log("select yellow");
       global_bar_color = "rgba(240, 163, 10, 0.8)";
@@ -193,13 +205,17 @@ function openNotePanel() {
       console.log("select red");
       global_bar_color = "rgba(229, 20, 0, 0.8)"
     }else if($(e.target).attr("data") === "transparent"){
-      console.log("select transparent");
       global_bar_color = "#";
+      note_bar_span.css("cursor", "pointer");
+      note_bar_span.click((e) => {
+        $(e.target).removeClass("note-bar-span");
+        $(e.target).removeAttr("style");
+      })
     }
   });
   $(document).on('mousedown', function(e) {}).on("mouseup", function (e) {
     changeBarColor();
-  })
+  });
 }
 
 function changeBarColor() {
@@ -208,15 +224,12 @@ function changeBarColor() {
   let range = selector.getRangeAt(0);
   if (selectStr.trim() !== "") {
     if(global_bar_color !== "#"){
-      console.log("range: ", range);
       let temp = document.createElement('span');
-      temp.style.cssText = "background: " + global_bar_color + ";";
+      temp.style.cssText = "background: " + global_bar_color + ";z-index: " + z_index + ";";
+      z_index ++;
       temp.className = "note-bar-span";
-      console.log("temp: ", temp);
       // 将range的值赋值给temp
       range.surroundContents(temp);
-    }else{
-      range.startContainer.innerHTML = selectStr;
     }
   }
 }

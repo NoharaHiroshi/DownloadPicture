@@ -89,6 +89,36 @@
     cursor: pointer;
 }
 
+.note-print {
+    display: inline-block;
+    margin: 0 10px;
+    background: rgba(64, 158, 255, 1);
+    line-height: 25px;
+    padding: 3px 12px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.note-print:hover {
+    background: rgba(64, 158, 255, 0.8);
+}
+
+.note-close {
+    display: inline-block;
+    margin: 0 10px;
+    background: rgba(245, 108, 108, 1);
+    line-height: 25px;
+    padding: 3px 12px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.note-close:hover {
+    background: rgba(245, 108, 108, 0.8);
+}
+
 #barYellow {
     background: rgba(240, 163, 10, 1);
 }
@@ -117,5 +147,5 @@
     border: 2px solid #efefef;
 }
 .bar-active {
-    border: 2px solid #efefef;
+    border: 2px solid #efefef !important;
 }
